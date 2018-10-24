@@ -4,6 +4,7 @@ void Highprom::init(){
     for (int i = 0; i < size; i++) {
         EEPROM.write(i, '\0');
     }
+    EEPROM.commit();
 }
 char * Highprom::getValue(char const *key, char *dst, unsigned n){
     int valueIndex = indexOfValue(key);
@@ -74,6 +75,7 @@ void Highprom::removeCell(int index){
         for (int i = index+cell_length + 1; i < size; i++) {
             EEPROM.write(index++, EEPROM.read(i));
         }
+        EEPROM.commit();
     }
 }
 
@@ -92,6 +94,7 @@ bool Highprom::insertValue(char const*key, char const*value){
             for (size_t i = 0; i < strlen(value); i++) {
                 EEPROM.write(current_index+i, value[i]);
             }
+            EEPROM.commit();
             return true;
         } else{
             removeValue(key);
@@ -109,6 +112,7 @@ bool Highprom::writeOnAdress(char const* str, int address){
         }
         EEPROM.write(i, str[i]);
     }
+    EEPROM.commit();
     return (i == end)?true:false;
 }
 
@@ -124,6 +128,7 @@ void Highprom::eraseFromTo(int start, int end){
     for (int i = start; i < end; i++) {
         EEPROM.write(i, '\0');
     }
+    EEPROM.commit();
 }
 
 bool Highprom::insertAtEnd(char const* key,char const* value){
@@ -139,6 +144,7 @@ bool Highprom::insertAtEnd(char const* key,char const* value){
         EEPROM.write(index+i, key[i]);
     }
     EEPROM.write(index+i, '\0');
+    EEPROM.commit();
     index = index + i + 1;
     i = 0;
     for (; i < (int)strlen(value); i++) {
@@ -148,6 +154,7 @@ bool Highprom::insertAtEnd(char const* key,char const* value){
         }
         EEPROM.write(index+i, value[i]);
     }
+    EEPROM.commit();
     return true;
 }
 
